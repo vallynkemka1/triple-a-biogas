@@ -119,10 +119,10 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 84px;
+  height: 100px;
 }
 
-.logo { height: 60px; width: auto; }
+.logo { height: 80px; width: auto; }
 
 .nav-links {
   display: flex;

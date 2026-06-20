@@ -205,10 +205,11 @@
           </li>
         </ul>
       </div>
-      <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+      <form class="contact-form" action="https://formsubmit.co/tripleabiogas.consulting@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="New enquiry — Triple A Biogas Consulting" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://vallynkemka1.github.io/triple-a-biogas/?sent=true" />
         <h3>Send a Message</h3>
         <div class="form-row">
           <div class="form-group">
@@ -268,32 +269,13 @@
       document.querySelector('.nav-links').classList.toggle('open');
     });
 
-    // Contact form — submits to Formsubmit.co
-    async function handleSubmit(e) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      btn.textContent = 'Sending…';
-      btn.disabled = true;
-
-      const data = new FormData(form);
-      const res = await fetch('https://formsubmit.co/ajax/tripleabiogas.consulting@gmail.com', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: data
-      });
-      const json = await res.json();
-
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
-
-      if (json.success === 'true' || json.success === true) {
-        form.reset();
-        const msg = document.getElementById('form-success');
+    // Show success message if redirected back after form submission
+    if (new URLSearchParams(window.location.search).get('sent') === 'true') {
+      window.location.hash = '#contact';
+      const msg = document.getElementById('form-success');
+      if (msg) {
         msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 5000);
-      } else {
-        alert('Something went wrong. Please email us directly at tripleabiogas.consulting@gmail.com');
+        setTimeout(() => msg.style.display = 'none', 6000);
       }
     }
   </script>

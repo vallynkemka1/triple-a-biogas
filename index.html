@@ -205,7 +205,10 @@
           </li>
         </ul>
       </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
+      <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="_subject" value="New enquiry — Triple A Biogas Consulting" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
         <h3>Send a Message</h3>
         <div class="form-row">
           <div class="form-group">
@@ -265,14 +268,33 @@
       document.querySelector('.nav-links').classList.toggle('open');
     });
 
-    // Contact form mock submit
-    function handleSubmit(e) {
+    // Contact form — submits to Formsubmit.co
+    async function handleSubmit(e) {
       e.preventDefault();
-      document.getElementById('form-success').style.display = 'block';
-      e.target.reset();
-      setTimeout(() => {
-        document.getElementById('form-success').style.display = 'none';
-      }, 5000);
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      const data = new FormData(form);
+      const res = await fetch('https://formsubmit.co/ajax/tripleabiogas.consulting@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+      });
+      const json = await res.json();
+
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+
+      if (json.success === 'true' || json.success === true) {
+        form.reset();
+        const msg = document.getElementById('form-success');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 5000);
+      } else {
+        alert('Something went wrong. Please email us directly at tripleabiogas.consulting@gmail.com');
+      }
     }
   </script>
 
